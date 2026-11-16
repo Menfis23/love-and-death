@@ -1,0 +1,85 @@
+:root{
+  --night:#070b16; --night-2:#0d1730; --frost:#dfe8f2; --dim:#8794ab;
+  --lamp:#ffd27a; --lamp-deep:#e59b3a; --line:rgba(223,232,242,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{
+  font-family:'EB Garamond',Georgia,serif;color:var(--frost);
+  background:radial-gradient(1200px 800px at 50% -10%,#14234a 0%,var(--night-2) 35%,var(--night) 75%);
+  -webkit-font-smoothing:antialiased;transition:background 2.5s ease;
+}
+body[data-mode="lamp"]{background:radial-gradient(900px 700px at 50% 45%,#1d1408 0%,#0d0a06 55%,#050403 100%)}
+button{font-family:inherit;color:inherit;cursor:pointer}
+
+canvas#snow{position:fixed;inset:0;z-index:0;pointer-events:none;transition:opacity 2s ease}
+body[data-mode="lamp"] canvas#snow{opacity:0}
+
+/* Warm light behind the lamp; dims with the bazaar */
+#glow{position:fixed;left:50%;top:44%;width:70vmin;height:70vmin;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,210,122,.33) 0%,rgba(229,155,58,.12) 40%,transparent 70%);
+  opacity:0;pointer-events:none;z-index:0;transition:opacity 2s ease}
+body[data-mode="lamp"] #glow{opacity:1}
+body.dimmed #glow{opacity:.04;transition:opacity 9s ease}
+
+/* ---------- The words ---------- */
+#stage{position:fixed;inset:0;z-index:1;pointer-events:none}
+.w{
+  position:absolute;left:0;top:0;white-space:nowrap;line-height:1;
+  font-family:'IM Fell English',Georgia,serif;color:var(--frost);
+  will-change:transform,opacity;
+  transition-property:transform,font-size,color,opacity,text-shadow;
+  transition-timing-function:cubic-bezier(.22,.7,.2,1);
+}
+body[data-mode="intro"] .w{opacity:.16}
+body[data-mode="lamp"] .w{color:var(--lamp);text-shadow:0 0 10px rgba(255,190,90,.75),0 0 22px rgba(229,155,58,.35)}
+body.dimmed .w{color:#4a3b25!important;text-shadow:none!important;transition-duration:9s!important;transition-delay:0s!important}
+body[data-mode="window"] .w.frame{color:#e9eef6}
+body[data-mode="window"] .w.falling{color:#ffffff;text-shadow:0 0 8px rgba(255,255,255,.55)}
+
+/* ---------- Intro / caption ---------- */
+#intro{position:fixed;inset:0;z-index:2;display:grid;place-content:center;text-align:center;padding:0 20px 120px;transition:opacity 1.2s ease}
+body:not([data-mode="intro"]) #intro{opacity:0;pointer-events:none}
+h1{font-family:'IM Fell English',Georgia,serif;font-weight:400;font-size:clamp(46px,9vw,96px);margin:0;letter-spacing:.01em}
+.by{color:var(--dim);font-style:italic;font-size:clamp(16px,2.2vw,20px);margin:8px 0 0}
+.hint{color:var(--dim);font-size:16px;margin-top:26px;letter-spacing:.04em}
+#caption{position:fixed;left:0;right:0;top:max(18px,env(safe-area-inset-top));z-index:3;text-align:center;margin:0;
+  font-style:italic;color:var(--dim);font-size:16px;opacity:0;transition:opacity 1.2s ease;padding:0 16px}
+#caption.on{opacity:1}
+
+/* ---------- Controls ---------- */
+#controls{position:fixed;left:0;right:0;bottom:0;z-index:4;padding:12px 14px max(14px,env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:linear-gradient(transparent,rgba(5,8,16,.85) 40%)}
+.shapes{display:flex;gap:10px}
+.shapes button{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:9px 18px 8px;
+  display:flex;flex-direction:column;align-items:center;min-width:96px;transition:border-color .3s,background .3s}
+.shapes button b{font-family:'IM Fell English',Georgia,serif;font-weight:400;font-size:20px}
+.shapes button span{font-size:12.5px;color:var(--dim);font-style:italic}
+.shapes button:hover{border-color:rgba(223,232,242,.4)}
+.shapes button.on{border-color:var(--frost);background:rgba(255,255,255,.09)}
+body[data-mode="lamp"] .shapes button.on{border-color:var(--lamp)}
+.extras{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.extras button{background:none;border:none;color:var(--dim);font-size:15px;padding:4px 10px;border-radius:8px}
+.extras button:hover{color:var(--frost)}
+
+/* ---------- Panels ---------- */
+.panel{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;background:rgba(4,6,12,.72);
+  backdrop-filter:blur(4px);animation:fade .5s ease}
+.panel[hidden]{display:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.paper{position:relative;max-width:620px;width:100%;max-height:86vh;overflow:auto;background:#0e1424;border:1px solid var(--line);
+  border-radius:14px;padding:30px 30px 34px}
+.paper h2{font-family:'IM Fell English',Georgia,serif;font-weight:400;font-size:34px;margin:0}
+.paper #poemText{font-size:20px;line-height:1.75;margin-top:20px}
+.close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:28px;color:var(--dim)}
+.placeholder{margin-top:20px;border:1px dashed rgba(223,232,242,.3);border-radius:10px;padding:18px;color:var(--dim);font-style:italic;font-size:18px;line-height:1.6}
+
+@media (max-width:560px){
+  .shapes button{min-width:0;padding:8px 13px 7px}
+  .shapes button b{font-size:18px}
+  .extras button{font-size:14px;padding:4px 7px}
+  .paper{padding:24px 20px 26px}
+  .paper #poemText{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){ .w{transition-duration:.01s!important;transition-delay:0s!important} }
