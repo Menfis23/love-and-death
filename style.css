@@ -73,6 +73,8 @@ body[data-mode="lamp"] .shapes button.on{border-color:var(--lamp)}
 .paper h2{font-family:'IM Fell English',Georgia,serif;font-weight:400;font-size:34px;margin:0}
 .paper #poemText{font-size:20px;line-height:1.75;margin-top:20px}
 .close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:28px;color:var(--dim)}
+.reflection{margin-top:18px;font-size:19px;line-height:1.7}
+.reflection p{margin:0 0 14px}
 .placeholder{margin-top:20px;border:1px dashed rgba(223,232,242,.3);border-radius:10px;padding:18px;color:var(--dim);font-style:italic;font-size:18px;line-height:1.6}
 
 @media (max-width:560px){
